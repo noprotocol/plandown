@@ -44,13 +44,6 @@ class PagedResult extends Object implements Iterator {
         return $this->index < $this->getPage(0)->total;
     }
 
-    /**
-     * @return array
-     */
-    function toArray() {
-        return iterator_to_array($this);
-    }
-
     private function getPage($index) {
         if (isset($this->pages[$index])) {
             return $this->pages[$index];

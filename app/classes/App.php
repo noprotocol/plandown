@@ -33,14 +33,19 @@ class App extends Website {
         return $form;
     }
 
+    /**
+     * 
+     * @param string $name
+     * @return View
+     */
     public function dynamicFoldername($name) {
-        $folder = new DomainFolder($name);
+        $folder = new ImportWizard($name);
         return $folder->generateContent();
     }
 
     protected function wrapContent($view) {
         $headers = array(
-            'title' => 'Sledgehammer App',
+            'title' => 'Plandown',
             'css' => WEBROOT . 'mvc/css/bootstrap.css',
         );
         return new Template('layout.php', array('content' => $view), $headers);

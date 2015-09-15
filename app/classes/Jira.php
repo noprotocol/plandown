@@ -1,5 +1,6 @@
 <?php
 
+use Sledgehammer\Collection;
 use Sledgehammer\Curl;
 use Sledgehammer\Html;
 use Sledgehammer\Json;
@@ -53,12 +54,14 @@ class Jira extends Object {
     }
 
     /**
+     * Search for issues using JQL.
      * 
-     * @param string $jql
-     * @param array|string $fields
-     * @return object
+     * @param string $jql  a JQL query string
+     * @param array|string $fields  The list of fields to return for each issue. By default, all navigable fields are returned.
+     * @param array|string $expand  A comma-separated list of the parameters to expand.
+     * @return Collection
      */
-    function search($jql, $fields = null) {
+    function query($jql, $fields = null, $expand = null) {
         $parameters = ['jql' => $jql];
         if ($fields !== null) {
             if (is_array($fields)) {
@@ -66,11 +69,24 @@ class Jira extends Object {
             }
             $parameters['fields'] = $fields;
         }
+        if ($expand !== null) {
+            if (is_array($expand)) {
+                $expand = implode(',', $expand);
+            }
+            $parameters['expand'] = $expand;
+        }
         $url = new Url($this->baseUrl . 'search');
         $url->query = $parameters;
-        return new PagedResult($this, $url);
+        return new Collection(new PagedResult($this, $url));
     }
 
+    /**
+     * Perform the Api call
+     *
+     * @param type $options
+     * @return type
+     * @throws Exception
+     */
     function api($options = []) {
         $start = microtime(true);
         $options[CURLOPT_USERNAME] = $this->username;
