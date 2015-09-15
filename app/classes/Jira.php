@@ -1,11 +1,20 @@
 <?php
 
 use Sledgehammer\Curl;
+use Sledgehammer\Html;
 use Sledgehammer\Json;
+use Sledgehammer\Logger;
 use Sledgehammer\Object;
+use Sledgehammer\Url;
+use function Sledgehammer\format_parsetime;
 
+/**
+ * REST API Client for the Jira bugtracker
+ * https://developer.atlassian.com/static/rest/jira/6.1.html
+ */
 class Jira extends Object {
 
+    public $logger;
     public $baseUrl;
     public $username;
     public $password;
@@ -14,25 +23,32 @@ class Jira extends Object {
         $this->baseUrl = $domain . '/rest/api/2/';
         $this->username = $username;
         $this->password = $password;
+        $this->logger = new Logger([
+            'identifier' => 'Jira',
+//            'singular' => 'request',
+//            'plural' => 'requests',
+            'renderer' => self::class . '::renderLog',
+            'columns' => array('Request', 'Duration'),
+        ]);
     }
 
     function get($path, $parameters = []) {
-        $url = new \Sledgehammer\Url($this->baseUrl . $path);
+        $url = new Url($this->baseUrl . $path);
         $url->query = $parameters;
         return $this->api([
-                CURLOPT_URL => (string) $url
+                    CURLOPT_URL => (string) $url
         ]);
     }
 
     function post($path, $data) {
-        $url = new \Sledgehammer\Url($this->baseUrl . $path);
+        $url = new Url($this->baseUrl . $path);
         return $this->api([
-                CURLOPT_POST => true,
-                CURLOPT_URL => (string) $url,
-                CURLOPT_POSTFIELDS => Json::encode($data),
-                CURLOPT_HTTPHEADER => [
-                    'Content-Type: application/json'
-                ]
+                    CURLOPT_POST => true,
+                    CURLOPT_URL => (string) $url,
+                    CURLOPT_POSTFIELDS => Json::encode($data),
+                    CURLOPT_HTTPHEADER => [
+                        'Content-Type: application/json'
+                    ]
         ]);
     }
 
@@ -42,7 +58,7 @@ class Jira extends Object {
      * @param array|string $fields
      * @return object
      */
-    function query($jql, $fields = null) {
+    function search($jql, $fields = null) {
         $parameters = ['jql' => $jql];
         if ($fields !== null) {
             if (is_array($fields)) {
@@ -50,10 +66,13 @@ class Jira extends Object {
             }
             $parameters['fields'] = $fields;
         }
-        return $this->get('search', $parameters);
+        $url = new Url($this->baseUrl . 'search');
+        $url->query = $parameters;
+        return new PagedResult($this, $url);
     }
 
     function api($options = []) {
+        $start = microtime(true);
         $options[CURLOPT_USERNAME] = $this->username;
         $options[CURLOPT_PASSWORD] = $this->password;
         $options[CURLOPT_FAILONERROR] = false;
@@ -62,6 +81,7 @@ class Jira extends Object {
         $options += Curl::$defaults;
         $response = new Curl($options);
         $body = $response->getBody();
+        $this->logger->append($options[CURLOPT_URL], ['relativeUrl' => substr($options[CURLOPT_URL], strlen($this->baseUrl)), 'duration' => microtime(true) - $start]);
         if (in_array($response->http_code, [200, 201])) {
             return Json::decode($body);
         }
@@ -75,6 +95,19 @@ class Jira extends Object {
             }
         }
         throw new Exception('[Jira] ' . $response->http_code . ' ' . $options[CURLOPT_URL]);
+    }
+
+    static function renderLog($entry, $meta) {
+        $duration = $meta['duration'];
+        if ($duration > 3) {
+            $color = 'logentry-alert';
+        } elseif ($duration > 1.5) {
+            $color = 'logentry-warning';
+        } else {
+            $color = 'logentry-debug';
+        }
+        echo '<td title="', Html::escape($entry), '">', Html::escape($meta['relativeUrl']), '</td>';
+        echo '<td class="logentry-number ', $color, '"><b>', format_parsetime($duration), '</b>&nbsp;sec</td>';
     }
 
 }
