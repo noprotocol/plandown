@@ -1,0 +1,5 @@
+Allow from all
+# Redirect everything to rewrite.php except existing files.
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^.*$            rewrite.php?%{QUERY_STRING}

@@ -1,0 +1,7 @@
+{
+    "name": "plandown",
+    "require": {
+        "sledgehammer/core": "^15.08",
+        "sledgehammer/mvc": "^13.09"
+    }
+}
