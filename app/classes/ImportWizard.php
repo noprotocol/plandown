@@ -19,7 +19,6 @@ class ImportWizard extends VirtualFolder {
     const EPIC_LINK = 'customfield_10008';
     const EPIC_NAME = 'customfield_10009';
     const POINTS = 'customfield_10004';
-    
 
     protected $handle_filenames_without_extension = true;
     public $subdomain;
@@ -73,7 +72,6 @@ class ImportWizard extends VirtualFolder {
         $projects = collection($this->jira->get('project'))->orderByDescending('id')->select('name', 'id');
         $form = new Form([
             'action' => 'import',
-            'method' => 'get',
             'fields' => [
                 new Input(['name' => 'stories', 'type' => 'hidden', 'value' => Json::encode($stories)]),
                 'Into project' => new Input(['type' => 'select', 'name' => 'project', 'attributes' => ['options' => $projects]]),
@@ -85,17 +83,17 @@ class ImportWizard extends VirtualFolder {
             'form' => $form
         ]);
     }
-    
+
     function import() {
         $projectId = $_REQUEST['project'];
         $stories = collection(Json::decode($_REQUEST['stories']));
         // Synchronize epics
         $epics = array_unique($stories->select('epic')->toArray());
-        $existingEpics = $this->jira->query('project=' . $projectId . ' AND issuetype="Epic"', 'summary');
+        $existingEpics = $this->jira->query('project=' . $projectId . ' AND issuetype="Epic"', self::EPIC_NAME);
         $epicKeys = [];
         foreach ($existingEpics as $issue) {
-            $epicKeys[$issue->fields->summary] = $issue->key;
-            $foundIndex = array_search($issue->fields->summary, $epics);
+            $epicKeys[$issue->fields->{self::EPIC_NAME}] = $issue->key;
+            $foundIndex = array_search($issue->fields->{self::EPIC_NAME}, $epics);
             if ($foundIndex !== false) {
                 unset($epics[$foundIndex]);
             }
@@ -107,50 +105,23 @@ class ImportWizard extends VirtualFolder {
                     "issuetype" => ["name" => "Epic"],
                     "summary" => $epic,
                     self::EPIC_NAME => $epic,
-
                 ]
             ]);
             $epicKeys[$epic] = $result->key;
         }
+        // Create stories
         foreach ($stories as $story) {
-//            $result = $this->jira->post('issue', [
-//                "fields" => [
-//                    "project" => ['id' => $projectId],
-//                    "summary" => $story->summary,
-//                    "issuetype" => ["name" => "Story"],
-//                    self::EPIC_LINK => 'key:'.$epicKeys[$story->epic],
-//                    self::POINTS => $story->points,
-//                ],
-//            ]);
-//            dump($result);
-//            die;
+            $result = $this->jira->post('issue', [
+                "fields" => [
+                    "project" => ['id' => $projectId],
+                    "summary" => $story->summary,
+                    "issuetype" => ["name" => "Story"],
+                    self::EPIC_LINK => 'key:' . $epicKeys[$story->epic],
+                    self::POINTS => $story->points,
+                ],
+            ]);
         }
-        return new Dump($epicKeys);
-    }
-
-    function create_epic() {
-        $result = $this->jira->post('issue', [
-            "fields" => [
-                "project" => ['id' => 14600],
-                "summary" => "TEST 124.",
-                "description" => "Creating of an EPIC",
-                self::EPIC_NAME => "Zoiets?",
-                "issuetype" => ["name" => "Epic"],
-            ]
-        ]);
-        return new Dump($result);
-    }
-
-    function create_story() {
-        $result = $this->jira->post('issue', [
-            "fields" => [
-                "project" => ['id' => 14600],
-                "summary" => "TEST in epic.",
-                "description" => "Creating of an issue using project id and issue type names using the REST API",
-                "issuetype" => ["name" => "Story"],
-                self::EPIC_LINK => 'key:VAN-7'
-            ],
-        ]);
+        return new Dump($stories->count() . ' stories created');
     }
 
     function projects() {
@@ -158,9 +129,9 @@ class ImportWizard extends VirtualFolder {
     }
 
     function epics() {
-        return new Dump($this->jira->query('project=' . $_GET['project'] . ' AND issuetype="Epic"', 'summary')->toArray());
+        return new Dump($this->jira->query('project=' . $_GET['project'] . ' AND issuetype="Epic"', 'summary,' . self::EPIC_NAME)->toArray());
     }
-    
+
     function issues() {
         return new Dump($this->jira->query('project=' . $_GET['project'])->toArray());
     }
