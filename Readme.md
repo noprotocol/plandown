@@ -4,7 +4,7 @@ Create JIRA stories using text document.
 
 # Demo
 
-http://plandown.herokuapp.com/
+https://plandown.herokuapp.com/
 
 Login in using you username & password (not your email)
 Your username can be found on: https://[your-subdomain].atlassian.net/secure/ViewProfile.jspa 

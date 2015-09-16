@@ -1,9 +1,11 @@
 <?php
 
+use Sledgehammer\DescriptionList;
 use Sledgehammer\Dump;
 use Sledgehammer\Form;
 use Sledgehammer\HttpAuthentication;
 use Sledgehammer\HttpError;
+use Sledgehammer\InfoException;
 use Sledgehammer\Input;
 use Sledgehammer\Json;
 use Sledgehammer\Template;
@@ -68,7 +70,14 @@ class ImportWizard extends VirtualFolder {
     }
 
     function parse() {
-        $stories = Plandown::parse($_REQUEST['plandown']);
+        try {
+            $stories = Plandown::parse($_REQUEST['plandown']);
+        } catch (InfoException $e) {
+            return new Template('parse-error.php', [
+                'error' => $e->getMessage(),
+                'info' => new DescriptionList(['items' => $e->getInformation()])
+            ]);
+        }
         $projects = collection($this->jira->get('project'))->orderByDescending('id')->select('name', 'id');
         $form = new Form([
             'action' => 'import',

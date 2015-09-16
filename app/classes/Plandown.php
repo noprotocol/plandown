@@ -54,7 +54,7 @@ class Plandown extends Object {
                 ];
                 $stories[] = $story;
             } else {
-                throw new Sledgehammer\InfoException('No points detected in "' . $text . '" on line ' . $linenr, ['Hint' => 'An epic starts with one ore more "#"', 'Example' => '# My first epic']);
+                throw new Sledgehammer\InfoException('No points detected in "' . $text . '" on line ' . $linenr, ['Hint' => 'Every line must end with number followed by a unit', 'Example' => 'My item  4h']);
             }
         }
         return $stories;
