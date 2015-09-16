@@ -1,0 +1,82 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "053f7b7efdb71896e9f264a55076ec4a",
+    "packages": [
+        {
+            "name": "sledgehammer/core",
+            "version": "15.08.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sledgehammer/core.git",
+                "reference": "a919d5f9d2911f40d8ee45577317bad9f41b13c9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sledgehammer/core/zipball/a919d5f9d2911f40d8ee45577317bad9f41b13c9",
+                "reference": "a919d5f9d2911f40d8ee45577317bad9f41b13c9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC-BY-SA-3.0"
+            ],
+            "description": "The foundation of the Sledgehammer Framework",
+            "homepage": "http://sledgehammer.github.com/",
+            "keywords": [
+                "core",
+                "framework",
+                "sledgehammer"
+            ],
+            "time": "2015-09-08 11:54:47"
+        },
+        {
+            "name": "sledgehammer/mvc",
+            "version": "13.09.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sledgehammer/mvc.git",
+                "reference": "345aa8fea2832840791173a8196d9c75b120cea4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sledgehammer/mvc/zipball/345aa8fea2832840791173a8196d9c75b120cea4",
+                "reference": "345aa8fea2832840791173a8196d9c75b120cea4",
+                "shasum": ""
+            },
+            "require": {
+                "sledgehammer/core": "*"
+            },
+            "suggest": {
+                "sledgehammer/minify": "Minify assets like css, javascript and images"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC-BY-SA-3.0"
+            ],
+            "description": "Sledgehammer MVC module: Provides a Model View Controller architecture",
+            "time": "2013-09-22 20:55:05"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
