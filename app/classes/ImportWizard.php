@@ -126,7 +126,7 @@ class ImportWizard extends Folder {
                     "project" => ['id' => $projectId],
                     "summary" => $story->summary,
                     "issuetype" => ["name" => "Story"],
-                    self::EPIC_LINK => 'key:' . $epicKeys[$story->epic],
+                    self::EPIC_LINK => $epicKeys[$story->epic], // used to be prefixed with "key:"
                     self::POINTS => $story->points,
                 ],
             ]);
