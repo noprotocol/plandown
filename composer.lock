@@ -4,56 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "053f7b7efdb71896e9f264a55076ec4a",
+    "hash": "6c9f283a2836c6177871862ce5b9e0f7",
+    "content-hash": "aa9f92a1c156a237321e412b0df10e75",
     "packages": [
         {
             "name": "sledgehammer/core",
-            "version": "15.08.0",
+            "version": "16.05.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sledgehammer/core.git",
-                "reference": "a919d5f9d2911f40d8ee45577317bad9f41b13c9"
+                "reference": "c3dc0dc4e26497d018e382307abea5df315bed36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sledgehammer/core/zipball/a919d5f9d2911f40d8ee45577317bad9f41b13c9",
-                "reference": "a919d5f9d2911f40d8ee45577317bad9f41b13c9",
+                "url": "https://api.github.com/repos/sledgehammer/core/zipball/c3dc0dc4e26497d018e382307abea5df315bed36",
+                "reference": "c3dc0dc4e26497d018e382307abea5df315bed36",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.5"
             },
             "type": "library",
             "autoload": {
+                "psr-4": {
+                    "Sledgehammer\\Core\\": "src/",
+                    "SledgehammerTests\\Core\\": "tests/"
+                },
                 "files": [
-                    "bootstrap.php"
+                    "src/bootstrap.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "CC-BY-SA-3.0"
+                "MIT"
             ],
-            "description": "The foundation of the Sledgehammer Framework",
+            "description": "Sledgehammer - A general purpose PHP toolkit",
             "homepage": "http://sledgehammer.github.com/",
             "keywords": [
                 "core",
-                "framework",
-                "sledgehammer"
+                "sledgehammer",
+                "toolkit"
             ],
-            "time": "2015-09-08 11:54:47"
+            "time": "2016-04-19 14:25:07"
         },
         {
             "name": "sledgehammer/mvc",
-            "version": "13.09.0",
+            "version": "16.05.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sledgehammer/mvc.git",
-                "reference": "345aa8fea2832840791173a8196d9c75b120cea4"
+                "reference": "41bd4dc3d0a8281a4d68c715e15cd8117ce5e3f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sledgehammer/mvc/zipball/345aa8fea2832840791173a8196d9c75b120cea4",
-                "reference": "345aa8fea2832840791173a8196d9c75b120cea4",
+                "url": "https://api.github.com/repos/sledgehammer/mvc/zipball/41bd4dc3d0a8281a4d68c715e15cd8117ce5e3f8",
+                "reference": "41bd4dc3d0a8281a4d68c715e15cd8117ce5e3f8",
                 "shasum": ""
             },
             "require": {
@@ -63,12 +68,20 @@
                 "sledgehammer/minify": "Minify assets like css, javascript and images"
             },
             "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sledgehammer\\Mvc\\": "src"
+                },
+                "files": [
+                    "src/bootstrap.php"
+                ]
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "CC-BY-SA-3.0"
             ],
             "description": "Sledgehammer MVC module: Provides a Model View Controller architecture",
-            "time": "2013-09-22 20:55:05"
+            "time": "2016-05-02 10:18:35"
         }
     ],
     "packages-dev": [],

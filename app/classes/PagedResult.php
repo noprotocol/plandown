@@ -1,7 +1,10 @@
 <?php
+namespace Plandown;
 
-use Sledgehammer\Object;
-use Sledgehammer\Url;
+use Iterator;
+use Plandown\Jira;
+use Sledgehammer\Core\Object;
+use Sledgehammer\Core\Url;
 
 /**
  * Lazyload all pages in the jira resultsset.

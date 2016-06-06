@@ -1,6 +1,6 @@
 <?php
 
-use Sledgehammer\Html;
+use Sledgehammer\Core\Html;
 ?>
 <?php render($form); ?>
 <table class="table table-condensed table-striped">

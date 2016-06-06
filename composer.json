@@ -1,7 +1,12 @@
 {
     "name": "plandown",
     "require": {
-        "sledgehammer/core": "^15.08",
-        "sledgehammer/mvc": "^13.09"
+        "sledgehammer/core": "^16.05",
+        "sledgehammer/mvc": "^16.05"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plandown\\": "app/classes"
+        }
     }
 }

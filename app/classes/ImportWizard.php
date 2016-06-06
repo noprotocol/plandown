@@ -1,22 +1,23 @@
 <?php
+namespace Plandown;
 
-use Sledgehammer\DescriptionList;
-use Sledgehammer\Dump;
-use Sledgehammer\Form;
-use Sledgehammer\HttpAuthentication;
-use Sledgehammer\HttpError;
-use Sledgehammer\InfoException;
-use Sledgehammer\Input;
-use Sledgehammer\Json;
-use Sledgehammer\Template;
-use Sledgehammer\View;
-use Sledgehammer\VirtualFolder;
+use Sledgehammer\Core\Debug\Dump;
+use Sledgehammer\Core\HttpAuthentication;
+use Sledgehammer\Core\InfoException;
+use Sledgehammer\Core\Json;
+use Sledgehammer\Mvc\Component\DescriptionList;
+use Sledgehammer\Mvc\Component\Form;
+use Sledgehammer\Mvc\Component\HttpError;
+use Sledgehammer\Mvc\Component\Input;
+use Sledgehammer\Mvc\Component\Template;
+use Sledgehammer\Mvc\Folder;
+use const Sledgehammer\PATH;
 use function Sledgehammer\collection;
 
 /**
  * 
  */
-class ImportWizard extends VirtualFolder {
+class ImportWizard extends Folder {
 
     const EPIC_LINK = 'customfield_10008';
     const EPIC_NAME = 'customfield_10009';
@@ -87,7 +88,7 @@ class ImportWizard extends VirtualFolder {
                 new Input(['type' => 'submit', 'class' => 'btn btn-primary', 'value' => 'import']),
             ]
         ]);
-        return new Template('stories.php', [
+        return new Template(PATH.'app/templates/stories.php', [
             'stories' => $stories,
             'form' => $form
         ]);

@@ -1,12 +1,14 @@
 <?php
+namespace Plandown;
 
-use Sledgehammer\Form;
-use Sledgehammer\Input;
-use Sledgehammer\Template;
-use Sledgehammer\View;
-use Sledgehammer\Website;
+use Sledgehammer\Mvc\Component\Form;
+use Sledgehammer\Mvc\Component\Input;
+use Sledgehammer\Mvc\Component\Template;
+use Sledgehammer\Mvc\Website;
+use const Sledgehammer\PATH;
 use const Sledgehammer\WEBROOT;
 use function Sledgehammer\redirect;
+
 
 /**
  * 
@@ -38,7 +40,7 @@ class App extends Website {
      * @param string $name
      * @return View
      */
-    public function dynamicFoldername($name) {
+    public function folder($name) {
         $folder = new ImportWizard($name);
         return $folder->generateContent();
     }
@@ -48,7 +50,7 @@ class App extends Website {
             'title' => 'Plandown',
             'css' => WEBROOT . 'mvc/css/bootstrap.css',
         );
-        return new Template('layout.php', array('content' => $view), $headers);
+        return new Template(PATH.'app/templates/layout.php', array('content' => $view), $headers);
     }
 
 }

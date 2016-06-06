@@ -1,6 +1,8 @@
 <?php
 
-use Sledgehammer\Object;
+namespace Plandown;
+
+use Sledgehammer\Core\Object;
 
 /**
  * The plandown parser
