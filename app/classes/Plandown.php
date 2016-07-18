@@ -2,6 +2,7 @@
 
 namespace Plandown;
 
+use Sledgehammer\Core\InfoException;
 use Sledgehammer\Core\Object;
 
 /**
@@ -44,7 +45,7 @@ class Plandown extends Object {
                 $epic = ltrim($text, "# \t");
                 continue;
             } else if (!$epic) {
-                throw new Sledgehammer\InfoException('Plandown document must start with a epic definition', ['Hint' => 'An epic starts with one ore more "#"', 'Example' => '# My first epic']);
+                throw new InfoException('Plandown document must start with a epic definition', ['Hint' => 'An epic starts with one ore more "#"', 'Example' => '# My first epic']);
             }
             $text = ltrim($text, "-* \t"); // strip markdown summary notation
             if (preg_match('/\s*(?P<amount>[0-9.,]+)\s*(?P<unit>' . $unitRegex . ')$/i', $text, $match)) {
@@ -56,7 +57,7 @@ class Plandown extends Object {
                 ];
                 $stories[] = $story;
             } else {
-                throw new Sledgehammer\InfoException('No points detected in "' . $text . '" on line ' . $linenr, ['Hint' => 'Every line must end with number followed by a unit', 'Example' => 'My item  4h']);
+                throw new InfoException('No points detected in "' . $text . '" on line ' . $linenr, ['Hint' => 'Every line must end with number followed by a unit', 'Example' => 'My item  4h']);
             }
         }
         return $stories;

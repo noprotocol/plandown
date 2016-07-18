@@ -74,7 +74,7 @@ class ImportWizard extends Folder {
         try {
             $stories = Plandown::parse($_REQUEST['plandown']);
         } catch (InfoException $e) {
-            return new Template('parse-error.php', [
+            return new Template(PATH.'app/templates/parse-error.php', [
                 'error' => $e->getMessage(),
                 'info' => new DescriptionList(['items' => $e->getInformation()])
             ]);
