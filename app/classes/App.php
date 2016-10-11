@@ -24,12 +24,12 @@ class App extends Website {
         $form = new Form([
             'method' => 'post',
             'fields' => [
-                'JIRA Subdomain' => new Input(['name' => 'subdomain', 'class' => 'form-control']),
+                'subdomain' => new Input(['name' => 'subdomain', 'class' => 'form-control', 'label' => 'JIRA Subdomain']),
                 new Input(['type' => 'submit', 'class' => 'btn btn-primary', 'value' => 'Continue']),
             ]
         ]);
         $values = $form->import($error);
-        if ($values) {
+        if ($form->isSent()) {
             redirect($values['subdomain'] . '/');
         }
         return $form;
